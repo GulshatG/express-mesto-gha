@@ -6,11 +6,13 @@ const {
   createCard,
   addLike,
   deleteLike,
+  deleteCard,
 } = require('../cotrollers/cardController');
 
 router.get('/', getCards);
 router.get('/:cardId', getCardById);
 router.post('/', createCard);
+router.delete('/:cardId', deleteCard);
 router.put('/:cardId/likes', addLike);
 router.delete('/:cardId/likes', deleteLike);
 

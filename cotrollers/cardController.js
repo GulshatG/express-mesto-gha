@@ -25,6 +25,12 @@ module.exports.createCard = (req, res) => {
     .then((data) => handleOkStatus(data, res))
     .catch((err) => handleException(err, res));
 };
+module.exports.deleteCard = (req, res) => {
+  Card.findByIdAndDelete(req.params.cardId)
+    .orFail()
+    .then((data) => handleOkStatus(data, res))
+    .catch((err) => handleException(err, res));
+};
 module.exports.addLike = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,

@@ -18,6 +18,12 @@ module.exports.getUsers = (req, res) => {
     .then((data) => handleOkStatus(data, res))
     .catch((err) => handleException(err, res));
 };
+module.exports.deleteUserById = (req, res) => {
+  User.findByIdAndDelete(req.params.userId)
+    .orFail()
+    .then((data) => handleOkStatus(data, res))
+    .catch((err) => handleException(err, res));
+};
 module.exports.updateProfile = (req, res) => {
   User.findByIdAndUpdate(req.user._id, req.body, {
     new: true,

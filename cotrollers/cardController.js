@@ -22,7 +22,7 @@ module.exports.createCard = (req, res) => {
     ...req.body,
     owner,
   })
-    .then((data) => handleOkStatus(data, res))
+    .then((data) => handleOkStatus(data, res, 201))
     .catch((err) => handleException(err, res));
 };
 module.exports.deleteCard = (req, res) => {

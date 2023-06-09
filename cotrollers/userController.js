@@ -4,7 +4,7 @@ const handleException = require('../utils/handleException');
 
 module.exports.createUser = (req, res) => {
   User.create(req.body)
-    .then((data) => handleOkStatus(data, res))
+    .then((data) => handleOkStatus(data, res, 201))
     .catch((err) => handleException(err, res));
 };
 module.exports.getUserById = (req, res) => {

@@ -1,3 +1,4 @@
-module.exports = (data, res) => {
-  res.send({ data });
+module.exports = (data, res, statusCod = 200) => {
+  res.status(statusCod)
+    .send({ data });
 };

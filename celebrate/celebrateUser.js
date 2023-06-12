@@ -2,6 +2,7 @@ const {
   celebrate,
   Joi,
 } = require('celebrate');
+const { regexUrl } = require('../utils/regex');
 
 module.exports.celebrateCreateUser = celebrate({
   body: Joi.object()
@@ -13,7 +14,7 @@ module.exports.celebrateCreateUser = celebrate({
         .min(2)
         .max(30),
       avatar: Joi.string()
-        .uri(),
+        .regex(regexUrl),
       email: Joi.string()
         .required()
         .email(),

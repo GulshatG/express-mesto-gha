@@ -3,7 +3,7 @@ const {
   Joi,
 } = require('celebrate');
 
-module.exports = celebrate({
+module.exports.celebrateCreateCard = celebrate({
   body: Joi.object()
     .keys({
       name: Joi.string()
@@ -11,8 +11,7 @@ module.exports = celebrate({
         .min(2)
         .max(30),
       link: Joi.string()
-        .required()
-        .uri(),
+        .required(),
       owner: Joi.string()
         .required()
         .length(24),

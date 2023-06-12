@@ -12,8 +12,8 @@ module.exports.celebrateCreateUser = celebrate({
       about: Joi.string()
         .min(2)
         .max(30),
-      // avatar: Joi.string()
-      //   .uri(),
+      avatar: Joi.string()
+        .uri(),
       email: Joi.string()
         .required()
         .email(),

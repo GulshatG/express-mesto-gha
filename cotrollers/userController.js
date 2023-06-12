@@ -1,11 +1,9 @@
 const bcrypt = require('bcryptjs');
-const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const handleOkStatus = require('../utils/handleOkStatus');
 const ValidationMessage = require('../utils/validationMessage');
 const WrongCredentials = require('../exceptions/wrongCredentials');
-const StrongPassword = require('../exceptions/strongPassword');
 const Unauthorized = require('../exceptions/unauthorized');
 const { unauthorizedOrNotFound } = require('../utils/validationMessage');
 
@@ -18,17 +16,17 @@ function findUserById(userId, res, next) {
 
 module.exports.createUser = (req, res, next) => {
   const pass = req.body.password;
-  if (!validator.isStrongPassword(pass)) {
-    next(new StrongPassword(ValidationMessage.strongPasswordFormat));
-  } else {
-    bcrypt.hash(pass, 10)
-      .then((hashPassword) => User.create({
-        ...req.body,
-        password: hashPassword,
-      })
-        .then((user) => handleOkStatus(user, res, 201)))
-      .catch(next);
-  }
+  bcrypt.hash(pass, 10)
+    .then((hashPassword) => User.create({
+      ...req.body,
+      password: hashPassword,
+    })
+      .then((user) => {
+        const userObj = user.toObject();
+        delete userObj.password;
+        return handleOkStatus(userObj, res, 201);
+      }))
+    .catch(next);
 };
 module.exports.getUserById = (req, res, next) => {
   findUserById(req.params.userId, res, next);

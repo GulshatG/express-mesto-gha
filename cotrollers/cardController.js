@@ -19,7 +19,6 @@ module.exports.getCardById = (req, res, next) => {
 };
 module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
-
   Card.create({
     ...req.body,
     owner,

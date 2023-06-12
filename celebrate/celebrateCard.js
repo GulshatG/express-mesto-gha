@@ -12,9 +12,6 @@ module.exports.celebrateCreateCard = celebrate({
         .max(30),
       link: Joi.string()
         .required(),
-      owner: Joi.string()
-        .required()
-        .length(24),
       likes: Joi.array()
         .items(Joi.string()
           .length(24)),

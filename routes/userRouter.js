@@ -3,16 +3,17 @@ const router = require('express')
 const {
   getUsers,
   getUserById,
-  createUser,
   updateProfile,
   updateAvatar,
   deleteUserById,
+  getMe,
 } = require('../cotrollers/userController');
+const { celebrateUserById } = require('../celebrate/celebrateUser');
 
 router.get('/', getUsers);
-router.get('/:userId', getUserById);
-router.post('/', createUser);
-router.delete('/:userId', deleteUserById);
+router.get('/me', getMe);
+router.get('/:userId', celebrateUserById, getUserById);
+router.delete('/:userId', celebrateUserById, deleteUserById);
 router.patch('/me', updateProfile);
 router.patch('/me/avatar', updateAvatar);
 

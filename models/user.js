@@ -1,27 +1,32 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const ValidationMessage = require('../utils/validationMessage');
+const { regexUrl } = require('../utils/regex');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, ValidationMessage.name],
-    minlength: [2, `${ValidationMessage.minLength} 2`],
-    maxlength: [30, `${ValidationMessage.minLength} 30`],
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: [true, ValidationMessage.name],
-    minlength: [2, `${ValidationMessage.minLength} 2`],
-    maxlength: [30, `${ValidationMessage.minLength} 30`],
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: [true, ValidationMessage.avatar],
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
-      validator: (v) => validator.isURL(v),
+      validator: (v) => regexUrl.test(v),
       message: 'Wrong url',
     },
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
   },
 }, { versionKey: false });
 module.exports = mongoose.model('user', userSchema);

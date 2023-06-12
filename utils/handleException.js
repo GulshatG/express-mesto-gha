@@ -1,14 +1,20 @@
 const mongoose = require('mongoose');
+const { emailExist } = require('./validationMessage');
 
-module.exports = (err, res) => {
+// eslint-disable-next-line no-unused-vars
+module.exports = (err, req, res, next) => {
   if (err instanceof mongoose.Error.DocumentNotFoundError) {
     res.status(404)
       .send({ message: err.message });
-  } else if (err instanceof mongoose.Error.ValidationError || mongoose.Error.CastError) {
+  } else if (err instanceof mongoose.Error.ValidationError
+    || err instanceof mongoose.Error.CastError) {
     res.status(400)
       .send({ message: err.message });
+  } else if (err.code === 11000) {
+    res.status(409)
+      .send({ message: emailExist });
   } else {
-    res.status(500)
+    res.status(err.statusCode || 500)
       .send({ message: err.message });
   }
 };

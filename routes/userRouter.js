@@ -8,13 +8,16 @@ const {
   deleteUserById,
   getMe,
 } = require('../cotrollers/userController');
-const { celebrateUserById } = require('../celebrate/celebrateUser');
+const {
+  celebrateUserById,
+  celebrateUpdateUser,
+  celebrateUpdateUserAvatar,
+} = require('../celebrate/celebrateUser');
 
 router.get('/', getUsers);
 router.get('/me', getMe);
 router.get('/:userId', celebrateUserById, getUserById);
 router.delete('/:userId', celebrateUserById, deleteUserById);
-router.patch('/me', updateProfile);
-router.patch('/me/avatar', updateAvatar);
-
+router.patch('/me', celebrateUpdateUser, updateProfile);
+router.patch('/me/avatar', celebrateUpdateUserAvatar, updateAvatar);
 module.exports = router;

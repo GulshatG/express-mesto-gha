@@ -23,6 +23,31 @@ module.exports.celebrateCreateUser = celebrate({
         .min(8),
     }).unknown(true),
 });
+module.exports.celebrateUpdateUser = celebrate({
+  body: Joi.object()
+    .keys({
+      name: Joi.string()
+        .min(2)
+        .max(30),
+      about: Joi.string()
+        .min(2)
+        .max(30),
+      avatar: Joi.string()
+        .regex(regexUrl),
+      email: Joi.string()
+        .email(),
+      password: Joi.string()
+        .min(8),
+    }).unknown(true),
+});
+module.exports.celebrateUpdateUserAvatar = celebrate({
+  body: Joi.object()
+    .keys({
+      avatar: Joi.string()
+        .required()
+        .regex(regexUrl),
+    }),
+});
 module.exports.celebrateLogin = celebrate({
   body: Joi.object()
     .keys({

@@ -9,14 +9,7 @@ module.exports.getCards = (req, res, next) => {
     .then((data) => handleOkStatus(data, res))
     .catch(next);
 };
-module.exports.getCardById = (req, res, next) => {
-  const id = req.params.cardId;
-  Card.findById(id)
-    .orFail()
-    .populate('owner')
-    .then((data) => handleOkStatus(data, res))
-    .catch(next);
-};
+
 module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
   Card.create({
@@ -48,7 +41,6 @@ module.exports.addLike = (req, res, next) => {
     },
     {
       new: true,
-      runValidators: true,
     },
   )
     .orFail()
@@ -63,7 +55,6 @@ module.exports.deleteLike = (req, res, next) => {
     },
     {
       new: true,
-      runValidators: true,
     },
   )
     .orFail()

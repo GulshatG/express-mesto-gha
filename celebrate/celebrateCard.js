@@ -14,10 +14,6 @@ module.exports.celebrateCreateCard = celebrate({
       link: Joi.string()
         .required()
         .regex(regexUrl),
-      likes: Joi.array()
-        .items(Joi.string()
-          .length(24)),
-      createdAt: Joi.date(),
     }),
 });
 module.exports.celebrateCardById = celebrate({
@@ -25,6 +21,6 @@ module.exports.celebrateCardById = celebrate({
     .keys({
       cardId: Joi.string()
         .required()
-        .length(24),
+        .hex(),
     }),
 });

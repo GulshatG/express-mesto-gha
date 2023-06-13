@@ -19,26 +19,21 @@ module.exports.celebrateCreateUser = celebrate({
         .required()
         .email(),
       password: Joi.string()
-        .required()
-        .min(8),
-    }).unknown(true),
+        .required(),
+    }),
 });
 module.exports.celebrateUpdateUser = celebrate({
   body: Joi.object()
     .keys({
       name: Joi.string()
+        .required()
         .min(2)
         .max(30),
       about: Joi.string()
+        .required()
         .min(2)
         .max(30),
-      avatar: Joi.string()
-        .regex(regexUrl),
-      email: Joi.string()
-        .email(),
-      password: Joi.string()
-        .min(8),
-    }).unknown(true),
+    }),
 });
 module.exports.celebrateUpdateUserAvatar = celebrate({
   body: Joi.object()
@@ -55,8 +50,7 @@ module.exports.celebrateLogin = celebrate({
         .required()
         .email(),
       password: Joi.string()
-        .required()
-        .min(8),
+        .required(),
     }),
 });
 module.exports.celebrateUserById = celebrate({
@@ -64,6 +58,6 @@ module.exports.celebrateUserById = celebrate({
     .keys({
       userId: Joi.string()
         .required()
-        .length(24),
+        .hex(),
     }),
 });

@@ -18,6 +18,8 @@ const {
   celebrateCreateUser,
   celebrateLogin,
 } = require('./celebrate/celebrateUser');
+const PageNotFound = require('./exceptions/pageNotFound');
+const { pageNotFound } = require('./utils/validationMessage');
 
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
@@ -36,8 +38,7 @@ app.post('/signup', celebrateCreateUser, createUser);
 app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
-app.use('*', (req, res) => res.status(404)
-  .send({ message: 'wrong path' }));
+app.use('*', (req, res, next) => next(new PageNotFound(pageNotFound)));
 app.use(errors());
 app.use(handleExceptions);
 

@@ -16,4 +16,5 @@ module.exports = {
   ref: 'Wrong ref',
   unauthorized: 'You have to be authorized',
   notEnoughRight: 'You dont have enough rights',
+  pageNotFound: 'Page not found',
 };

@@ -4,8 +4,7 @@ const User = require('../models/user');
 const handleOkStatus = require('../utils/handleOkStatus');
 const ValidationMessage = require('../utils/validationMessage');
 const WrongCredentials = require('../exceptions/wrongCredentials');
-const Unauthorized = require('../exceptions/unauthorized');
-const { unauthorizedOrNotFound } = require('../utils/validationMessage');
+const { emailExist } = require('../utils/validationMessage');
 
 function findUserById(userId, res, next) {
   User.findById(userId)
@@ -26,7 +25,14 @@ module.exports.createUser = (req, res, next) => {
         delete userObj.password;
         return handleOkStatus(userObj, res, 201);
       }))
-    .catch(next);
+    .catch((err) => {
+      if (err.code === 11000) {
+        res.status(409)
+          .send({ message: emailExist });
+      } else {
+        next(err);
+      }
+    });
 };
 module.exports.getUserById = (req, res, next) => {
   findUserById(req.params.userId, res, next);
@@ -35,16 +41,6 @@ module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((data) => handleOkStatus(data, res))
     .catch(next);
-};
-module.exports.deleteUserById = (req, res, next) => {
-  if (req.params.userId === req.user._id) {
-    User.findByIdAndDelete(req.params.userId)
-      .orFail()
-      .then((data) => handleOkStatus(data, res))
-      .catch(next);
-  } else {
-    next(new Unauthorized(unauthorizedOrNotFound));
-  }
 };
 module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, {
@@ -82,7 +78,9 @@ module.exports.login = (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
         });
-        return res.send(user);
+        const userObj = user.toObject();
+        delete userObj.password;
+        return res.send(userObj);
       }))
     .catch(next);
 };

@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 const { regexUrl } = require('../utils/regex');
+const { emailFormat } = require('../utils/validationMessage');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    min: 2,
+    max: 30,
     default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
+    min: 2,
+    max: 30,
     default: 'Исследователь',
   },
   avatar: {
@@ -22,6 +28,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    validate: {
+      validator: (v) => validator.isEmail(v),
+      message: emailFormat,
+    },
   },
   password: {
     type: String,

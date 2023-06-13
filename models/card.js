@@ -6,6 +6,8 @@ const cardSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    min: 2,
+    max: 30,
   },
   link: {
     type: String,
@@ -21,15 +23,15 @@ const cardSchema = new mongoose.Schema({
     required: true,
   },
   likes: {
-    type: [[{
+    type: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user',
-    }], ValidationMessage.type],
+    }, ValidationMessage.type],
     default: [],
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 }, { versionKey: false });
 module.exports = mongoose.model('card', cardSchema);

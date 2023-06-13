@@ -6,7 +6,6 @@ const {
 } = require('../celebrate/celebrateCard');
 const {
   getCards,
-  getCardById,
   createCard,
   addLike,
   deleteLike,
@@ -14,7 +13,6 @@ const {
 } = require('../cotrollers/cardController');
 
 router.get('/', getCards);
-router.get('/:cardId', celebrateCardById, getCardById);
 router.post('/', celebrateCreateCard, createCard);
 router.delete('/:cardId', celebrateCardById, deleteCard);
 router.put('/:cardId/likes', celebrateCardById, addLike);

@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 const handleOkStatus = require('../utils/handleOkStatus');
-const Unauthorized = require('../exceptions/unauthorized');
-const { unauthorizedOrNotFound } = require('../utils/validationMessage');
+const NotEnoughRights = require('../exceptions/notEnoughRights');
+const { notEnoughRight } = require('../utils/validationMessage');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -27,12 +27,17 @@ module.exports.createCard = (req, res, next) => {
     .catch(next);
 };
 module.exports.deleteCard = (req, res, next) => {
-  Card.findOneAndRemove({
-    _id: req.params.cardId,
-    owner: req.user._id,
-  })
-    .orFail(new Unauthorized(unauthorizedOrNotFound))
-    .then((data) => handleOkStatus(data, res))
+  Card.findById(req.params.cardId)
+    .orFail()
+    .then(() => {
+      Card.findOneAndRemove({
+        _id: req.params.cardId,
+        owner: req.user._id,
+      })
+        .orFail(new NotEnoughRights(notEnoughRight))
+        .then((u) => handleOkStatus(u, res))
+        .catch(next);
+    })
     .catch(next);
 };
 module.exports.addLike = (req, res, next) => {

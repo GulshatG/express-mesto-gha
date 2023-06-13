@@ -2,6 +2,7 @@ const {
   celebrate,
   Joi,
 } = require('celebrate');
+const { regexUrl } = require('../utils/regex');
 
 module.exports.celebrateCreateCard = celebrate({
   body: Joi.object()
@@ -11,7 +12,8 @@ module.exports.celebrateCreateCard = celebrate({
         .min(2)
         .max(30),
       link: Joi.string()
-        .required(),
+        .required()
+        .regex(regexUrl),
       likes: Joi.array()
         .items(Joi.string()
           .length(24)),

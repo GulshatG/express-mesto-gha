@@ -15,5 +15,5 @@ module.exports = {
   type: 'Wrong type',
   ref: 'Wrong ref',
   unauthorized: 'You have to be authorized',
-  unauthorizedOrNotFound: 'Document does not exist or you do not have enough rights',
+  notEnoughRight: 'You dont have enough rights',
 };

@@ -6,11 +6,6 @@ const ValidationMessage = require('../utils/validationMessage');
 const WrongCredentials = require('../exceptions/wrongCredentials');
 const { emailExist } = require('../utils/validationMessage');
 
-const {
-  NODE_ENV,
-  JWT_SECRET,
-} = process.env;
-
 function findUserById(userId, res, next) {
   User.findById(userId)
     .orFail()
@@ -78,11 +73,7 @@ module.exports.login = (req, res, next) => {
         if (!matched) {
           return Promise.reject(new WrongCredentials(ValidationMessage.credentials));
         }
-        const token = jwt.sign(
-          { _id: user._id },
-          NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-          { expiresIn: '7d' },
-        );
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,

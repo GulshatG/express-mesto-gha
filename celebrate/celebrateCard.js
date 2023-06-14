@@ -21,6 +21,7 @@ module.exports.celebrateCardById = celebrate({
     .keys({
       cardId: Joi.string()
         .required()
+        .length(24)
         .hex(),
     }),
 });

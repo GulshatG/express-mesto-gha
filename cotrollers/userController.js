@@ -5,6 +5,7 @@ const handleOkStatus = require('../utils/handleOkStatus');
 const ValidationMessage = require('../utils/validationMessage');
 const WrongCredentials = require('../exceptions/wrongCredentials');
 const { emailExist } = require('../utils/validationMessage');
+const EmailExist = require('../exceptions/emailExist');
 
 function findUserById(userId, res, next) {
   User.findById(userId)
@@ -25,14 +26,7 @@ module.exports.createUser = (req, res, next) => {
         delete userObj.password;
         return handleOkStatus(userObj, res, 201);
       }))
-    .catch((err) => {
-      if (err.code === 11000) {
-        res.status(409)
-          .send({ message: emailExist });
-      } else {
-        next(err);
-      }
-    });
+    .catch((err) => next(err.code === 11000 ? new EmailExist(emailExist) : err));
 };
 module.exports.getUserById = (req, res, next) => {
   findUserById(req.params.userId, res, next);

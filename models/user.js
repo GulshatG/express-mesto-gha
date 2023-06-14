@@ -6,14 +6,14 @@ const { emailFormat } = require('../utils/validationMessage');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    min: 2,
-    max: 30,
+    minLength: 2,
+    maxLength: 30,
     default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    min: 2,
-    max: 30,
+    minLength: 2,
+    maxLength: 30,
     default: 'Исследователь',
   },
   avatar: {

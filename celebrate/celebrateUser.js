@@ -58,6 +58,7 @@ module.exports.celebrateUserById = celebrate({
     .keys({
       userId: Joi.string()
         .required()
+        .length(24)
         .hex(),
     }),
 });
